@@ -213,7 +213,17 @@ def parse_hit(snpid, hit):
         assert isinstance(hit, element.Tag)
     except AssertionError:
         raise TypeError
-    chrom = get_value(tag=hit, value='Hit_def')
+
+    def _parse_id(x):
+        parsed = x.split('|')[3]
+
+        if len(parsed) < 1:
+            return x
+
+        return parsed
+
+    chrom = _parse_id(get_value(tag=hit, value='Hit_id'))
+    # chrom = get_value(tag=hit, value='Hit_def')
     if chrom == NO_DEF_MESSAGE:
         chrom = get_value(tag=hit, value='Hit_accession')
     #   Holding lists
